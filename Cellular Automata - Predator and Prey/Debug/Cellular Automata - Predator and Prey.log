@@ -1,0 +1,3 @@
+﻿  Renderer.cpp
+Main.obj : error LNK2019: unresolved external symbol "void __cdecl render(void)" (?render@@YAXXZ) referenced in function _main
+C:\Users\cta9207\source\repos\Cellular Automata - Predator and Prey\Debug\Cellular Automata - Predator and Prey.exe : fatal error LNK1120: 1 unresolved externals
