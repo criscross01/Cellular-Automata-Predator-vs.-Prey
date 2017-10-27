@@ -1,19 +1,17 @@
 #include <iostream>
 #include "renderer.h"
 
+
 int main()
 {
-	if (graphicInit() != 0)
+
+	GLFWwindow* window = initializeWindow(800, 600, "Your Mom Gay");
+	if (window == NULL)
 	{
-		std::cerr << "Graphich initialization failed" << std::endl;
-		std::cin.get();
 		return -1;
 	}
-	
-	while (true)
-	{
-		render();
-	}
+	gladInitialize();
 
+	std::cin.get();
 	return 0;
 }

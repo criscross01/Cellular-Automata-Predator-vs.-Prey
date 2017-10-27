@@ -1,4 +1,5 @@
+#include <GLFW\glfw3.h>
 #pragma once
-int graphicInit();
+GLFWwindow* initializeWindow(int width, int height, const char* title);
 
-void render();
+void gladInitialize();
