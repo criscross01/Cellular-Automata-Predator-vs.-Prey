@@ -1,17 +1,16 @@
 #include <iostream>
-#include "renderer.h"
-
+#include "window.h"
 
 int main()
 {
+	Window window(800, 600, "YourMOM");
 
-	GLFWwindow* window = initializeWindow(800, 600, "Your Mom Gay");
-	if (window == NULL)
+	while (window.windowShouldClose())
 	{
-		return -1;
-	}
-	gladInitialize();
+		window.renderMain();
 
-	std::cin.get();
+		std::cout << "Gone throug loop" << std::endl;
+	}
+	
 	return 0;
 }
