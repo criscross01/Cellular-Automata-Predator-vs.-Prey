@@ -3,13 +3,14 @@
 
 int main()
 {
-	Window window(800, 600, "YourMOM");
+
+	Window window(800, 600, "OpenGL test");
 
 	while (window.windowShouldClose())
 	{
 		window.renderMain();
 
-		std::cout << "Gone throug loop" << std::endl;
+		std::cout << "LOOP!" << std::endl;
 	}
 	
 	return 0;
