@@ -12,6 +12,7 @@ int main()
 
 		std::cout << "LOOP!" << std::endl;
 	}
-	
+
+	glfwTerminate();
 	return 0;
 }

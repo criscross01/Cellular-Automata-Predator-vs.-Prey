@@ -13,8 +13,7 @@ public:
 private:
 	GLFWwindow* window;
 	void processInput();
-	unsigned int shaderProgram(void);
-	unsigned int VBO;
-	unsigned int VAO;
+	void shaderProgram(void);
+	unsigned int VBO, VAO, EBO;
 	unsigned int shaderPrgrm;
 };
