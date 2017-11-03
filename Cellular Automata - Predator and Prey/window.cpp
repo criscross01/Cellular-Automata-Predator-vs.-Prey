@@ -1,26 +1,34 @@
 #include "window.h"
 #include <iostream>
+#include <fstream>
+#include <cstring>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
 
+const char* Window::getShaderSource(std::string shaderSource)
+{
+	std::string line;
+	std::string text;
+	std::ifstream file;
+	file.open(shaderSource);
+
+	while (getline(file,line))
+	{
+		text += line + "\n";
+	}
+	file.close();
+
+	return text.c_str();
+}
+
 void Window::shaderProgram(void)
 {
-	const char *vertexShaderSource = "#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;\n"
-		"void main()\n"
-		"{\n"
-		"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-		"}\0";
-
-	const char *fragmentShaderSource = "#version 330 core\n"
-		"out vec4 FragColor;\n"
-		"void main()\n"
-		"{\n"
-		"	FragColor = vec4(1.0f,0.5f,0.2f,1.0f);\n"
-		"}\0";
+	const char *vertexShaderSource{getShaderSource("vertexShader.txt")};
+	
+	const char *fragmentShaderSource{ getShaderSource("fragmentShader.txt") };
 	
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -126,12 +134,16 @@ void Window::renderMain()
 {
 	//Input
 	this->processInput();
+	float timeValue = glfwGetTime();
+	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+	int vertexColorLocation = glGetUniformLocation(shaderPrgrm, "ourColor");
 
 	//Render
-	glClearColor(0.5f, 0.0f,0.5f, 1.0f);
+//	glClearColor(0.5f, 0.0f,0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(shaderPrgrm);
+	glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -153,7 +165,11 @@ bool Window::windowShouldClose(void)
 	}
 }
 
+Window::~Window() {}
+
+/*
 GLFWwindow* Window::getWindow(void)
 {
 	return window;
 }
+*/

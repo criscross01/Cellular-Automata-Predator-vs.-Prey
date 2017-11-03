@@ -4,7 +4,7 @@
 int main()
 {
 
-	Window window(800, 600, "OpenGL test");
+	Window window(800, 600, "Cellular Automata - Predator and Prey");
 
 	while (window.windowShouldClose())
 	{
