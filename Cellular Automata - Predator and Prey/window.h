@@ -15,7 +15,7 @@ public:
 private:
 	void processInput();
 	void shaderProgram(void);
-	const char* getShaderSource(std::string);
+	std::string getShaderSource(std::string);
 
 	GLFWwindow* window;
 	unsigned int VBO, VAO, EBO;

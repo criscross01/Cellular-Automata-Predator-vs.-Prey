@@ -8,7 +8,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-const char* Window::getShaderSource(std::string shaderSource)
+std::string Window::getShaderSource(std::string shaderSource)
 {
 	std::string line;
 	std::string text;
@@ -21,14 +21,16 @@ const char* Window::getShaderSource(std::string shaderSource)
 	}
 	file.close();
 
-	return text.c_str();
+	return text;
 }
 
 void Window::shaderProgram(void)
 {
-	const char *vertexShaderSource{getShaderSource("vertexShader.txt")};
+	std::string vertexBuffer{ getShaderSource("vertexShader.txt") };
+	const char *vertexShaderSource{vertexBuffer.c_str()};
 	
-	const char *fragmentShaderSource{ getShaderSource("fragmentShader.txt") };
+	std::string fragmentBuffer{ getShaderSource("fragmentShader.txt") };
+	const char *fragmentShaderSource{ fragmentBuffer.c_str() };
 	
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
