@@ -1,7 +1,7 @@
 ﻿  Renderer.cpp
-c:\users\cta9207\desktop\cellular-automata-predator-vs.-prey\cellular automata - predator and prey\renderer.cpp(24): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\cta9207\desktop\cellular-automata-predator-vs.-prey\cellular automata - predator and prey\renderer.cpp(25): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\g3258\desktop\cellular-automata-predator-vs.-prey\cellular automata - predator and prey\renderer.cpp(28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+c:\users\g3258\desktop\cellular-automata-predator-vs.-prey\cellular automata - predator and prey\renderer.cpp(29): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Generating Code...
   Skipping... (no relevant changes detected)
   Start.cpp
-  Cellular Automata - Predator and Prey.vcxproj -> C:\Users\cta9207\Desktop\Cellular-Automata-Predator-vs.-Prey\Cellular Automata - Predator and Prey\Debug\Cellular Automata - Predator and Prey.exe
+  Cellular Automata - Predator and Prey.vcxproj -> C:\Users\G3258\Desktop\Cellular-Automata-Predator-vs.-Prey\Cellular Automata - Predator and Prey\Debug\Cellular Automata - Predator and Prey.exe

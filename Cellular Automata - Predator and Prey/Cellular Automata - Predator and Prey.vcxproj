@@ -117,11 +117,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="empty.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Predator.cpp" />
+    <ClCompile Include="Prey.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="empty.h" />
+    <ClInclude Include="predator.h" />
+    <ClInclude Include="prey.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

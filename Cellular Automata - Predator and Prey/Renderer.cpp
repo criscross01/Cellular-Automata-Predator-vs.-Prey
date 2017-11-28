@@ -15,6 +15,10 @@ void processInput(GLFWwindow* window)
 
 Renderer::Renderer(int width, int height, const char* title)
 {
+
+	screenWidth = width;
+	screenHeight = height;
+
 	if (!glfwInit())
 	{
 		cerr << "GLFW failed to initialize" << endl;
@@ -51,10 +55,10 @@ Renderer::Renderer(int width, int height, const char* title)
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareRenderer.vertex), squareRenderer.vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square.vertices), square.vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(squareRenderer.indices), squareRenderer.indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square.indices), square.indices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -64,19 +68,28 @@ Renderer::Renderer(int width, int height, const char* title)
 	glBindVertexArray(0);
 }
 
-void Renderer::render() {
+void Renderer::render()
+{
 	processInput(window);
 
-	//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClearColor(0.4f, 1.0f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	glm::mat4 model; 
+
+	model = glm::scale(model , glm::vec3(0.004, 0.004, 0.004));
+	glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+	glUniform3f(glGetUniformLocation(shaderID, "color"), 1.0f, 0.0f, 0.0f);
 
 	useShader();
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
+
 
 
 //Shader Stuff
@@ -90,13 +103,16 @@ void Renderer::getShaderProgram(string vertexPath,string fragmentPath)
 	vertexData << vertexFile.rdbuf();
 	fragmentData << fragmentFile.rdbuf();
 
-	const char* vertexSource = vertexData.str().c_str();
-	const char* fragmentSource = fragmentData.str().c_str();
+	string vertexBuffer = vertexData.str();
+	string fragmentBuffer = fragmentData.str();
+
+	const char* vertexSource = vertexBuffer.c_str();
+	const char* fragmentSource = fragmentBuffer.c_str();
 
 	unsigned int vertex{ glCreateShader(GL_VERTEX_SHADER) }, fragment{glCreateShader(GL_FRAGMENT_SHADER)};
 
-	glShaderSource(vertex, 1, &vertexSource, 0);
-	glShaderSource(fragment, 1, &fragmentSource, 0);
+	glShaderSource(vertex, 1, &vertexSource, NULL);
+	glShaderSource(fragment, 1, &fragmentSource, NULL);
 
 	glCompileShader(vertex);
 	glCompileShader(fragment);

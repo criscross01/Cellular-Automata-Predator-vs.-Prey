@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{b1fd38f4-80ce-4f5b-87cd-0ee7584a4078}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Cells">
+      <UniqueIdentifier>{bc5c886e-7ad5-416a-b646-e687edee9a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cells">
+      <UniqueIdentifier>{0c3115ce-f7b0-443a-8ac8-c72a0107765b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -27,6 +33,15 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="empty.cpp">
+      <Filter>Source Files\Cells</Filter>
+    </ClCompile>
+    <ClCompile Include="Predator.cpp">
+      <Filter>Source Files\Cells</Filter>
+    </ClCompile>
+    <ClCompile Include="Prey.cpp">
+      <Filter>Source Files\Cells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
@@ -35,12 +50,21 @@
     <ClInclude Include="renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="empty.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
+    <ClInclude Include="predator.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
+    <ClInclude Include="prey.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="fragmentShader.txt">
+    <Text Include="vertexShader.txt">
       <Filter>Source Files\Shaders</Filter>
     </Text>
-    <Text Include="vertexShader.txt">
+    <Text Include="fragmentShader.txt">
       <Filter>Source Files\Shaders</Filter>
     </Text>
   </ItemGroup>
