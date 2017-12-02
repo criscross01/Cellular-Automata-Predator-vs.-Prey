@@ -30,16 +30,16 @@
     <ClCompile Include="Start.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="empty.cpp">
-      <Filter>Source Files\Cells</Filter>
-    </ClCompile>
     <ClCompile Include="Predator.cpp">
       <Filter>Source Files\Cells</Filter>
     </ClCompile>
     <ClCompile Include="Prey.cpp">
+      <Filter>Source Files\Cells</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Empty.cpp">
       <Filter>Source Files\Cells</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,16 +47,16 @@
     <ClInclude Include="stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="empty.h">
-      <Filter>Header Files\Cells</Filter>
-    </ClInclude>
     <ClInclude Include="predator.h">
       <Filter>Header Files\Cells</Filter>
     </ClInclude>
     <ClInclude Include="prey.h">
+      <Filter>Header Files\Cells</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="empty.h">
       <Filter>Header Files\Cells</Filter>
     </ClInclude>
   </ItemGroup>
