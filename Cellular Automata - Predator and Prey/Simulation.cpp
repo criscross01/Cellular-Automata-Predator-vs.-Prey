@@ -2,8 +2,6 @@
 
 using namespace std;
 
-
-
 void framebufferResize(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -32,7 +30,7 @@ Simulation::Simulation(int width, int height, const char* title)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3.0);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(screenWidth, screenHeight, title, NULL, NULL);
+	window = glfwCreateWindow(width, height, title, NULL, NULL);
 	if (window == NULL)
 	{
 		cerr << "Window is NULL" << endl;
@@ -72,32 +70,29 @@ Simulation::Simulation(int width, int height, const char* title)
 
 	glBindVertexArray(0);
 }
-/*
+
 void Simulation::render()
 {
 	processInput(window);
 	
 	useShader();
 	glBindVertexArray(VAO);
-
-	for (int x = 0; x < screenWidth; x++)
+	
+	renderTimeStart = clock();
+	for (int y = 0; y < screenHeight; y++)
 	{
-		for (int y = 0; y, screenHeight; y++)
+		for (int x = 0; x < screenWidth; x++)
 		{
-			glm::mat4 model;
-			model = glm::translate(model, glm::vec3(x, y, 0));
-			model = glm::scale(model,glm::vec3(0.004f,0.004f,0));
-			glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			glUniform3f(glGetUniformLocation(shaderID, "color"), 1.0f, 0.0f, 0.0f);
+			glUniformMatrix4fv(glGetUniformLocation(shaderID, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrices[y*screenWidth + x]));
+			glUniform3fv(glGetUniformLocation(shaderID, "color"), 1, glm::value_ptr(gameBoard[y*screenWidth + x]->color));
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 	}
+	cout << "Complete render: " << float(clock() - renderTimeStart) << endl;
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
-*/
-
 
 //Shader Stuff
 void Simulation::getShaderProgram(string vertexPath,string fragmentPath)
@@ -139,36 +134,126 @@ void Simulation::useShader()
 }
 
 
-
-
 //Simulation Stuff
 void Simulation::run()
 {
-	for (int x = 0; x < 2; x++)
+	for (int i = 0; i < (screenWidth * screenHeight); i++)
 	{
-		for (int y = 0; y < 1; y++)
-		{
-			switch (rand() % 3)
-			{
-			case 0:
-				gameBoard[x][y].empty = new Empty;
-				break;
-			
-			case 1:
-				gameBoard[x][y].prey = new Prey;
-				break;
+		gameBoard.push_back(new Cell);
+	}
 
-			case 2:
-				gameBoard[x][y].predator = new Predator;
-				break;
-			}
+	glm::mat4 scaleModel;
+	scaleModel = glm::scale(scaleModel, glm::vec3((float)2 / screenWidth,(float) 2 / screenHeight, 0.0f));
+	for (int y = 0; y < screenHeight; y++)
+	{
+		for (int x = 0; x < screenWidth; x++)
+		{
+			glm::mat4 model{ scaleModel };
+			model = glm::translate(model, glm::vec3((float)x - (screenWidth / 2),(float)y - (screenHeight / 2), 0.0f));
+			modelMatrices.push_back(model);
 		}
+	}
+
+	while (!glfwWindowShouldClose(window))
+	{
+		this->Step();
+
+		this->render();
 	}
 }
 
 void Simulation::Step()
 {
-	
+	for (int y = 0; y < screenHeight; y++)
+	{
+		for (int x = 0; x < screenWidth; x++)
+		{
+			srand((unsigned)time(0));
+
+			Cell* thisCell = gameBoard[y * screenWidth + x];
+			
+			int xMov;
+			int yMov;
+
+			if (x != 0 && x != (screenWidth-1))
+			{
+				xMov = rand() % 3 - 1;
+			}
+
+			else if (x == 0)
+			{
+				xMov = rand() % 2;
+			}
+			
+			else if (x == (screenWidth-1))
+			{
+				xMov = rand() % 2 - 1;
+			}
+
+
+			if (y != 0 && y != (screenHeight-1))
+			{
+				yMov = rand() % 3 - 1;
+			}
+
+			else if (y == 0)
+			{
+				yMov = rand() % 2;
+			}
+
+			else if (y == (screenHeight-1))
+			{
+				yMov = rand() % 2 - 1;
+			}
+
+			Cell* otherCell = gameBoard[(y + yMov)*screenWidth + (x + xMov)];
+
+
+
+			if( thisCell->celltype == 1) //If cell is predator
+			{
+				if (otherCell->celltype == 0) //If other cell is empty
+				{
+					otherCell->setPredator();
+					otherCell->health = thisCell->health;
+					thisCell->health = 1;
+				}
+
+				else if (otherCell->celltype == 2) //If other cell is prey
+				{
+					otherCell->setPredator();
+					otherCell->health += thisCell->health;
+					thisCell->health = thisCell->threshold;
+				}
+
+
+				thisCell->health -= 1;
+				if (thisCell->health <= 0) //Called when predator is "dead"
+				{
+					thisCell->setEmpty();
+					thisCell->health = 0;
+				}
+			}
+
+			else if (thisCell->celltype == 2) //If cell is prey
+			{
+				if (otherCell->celltype == 0) //If other cell is predator
+				{
+
+				}
+
+				else if (otherCell->celltype == 1)//If other cell is predator
+				{
+
+				}
+
+				else if (otherCell->celltype == 2) //If other cell is prey
+				{
+
+				}
+			}
+		}
+	}
 }
 
 

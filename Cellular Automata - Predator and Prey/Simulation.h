@@ -7,14 +7,13 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <time.h>
 
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-#include "prey.h"
-#include "predator.h"
-#include "empty.h"
+#include "cell.h"
 
 class Simulation
 {
@@ -23,19 +22,18 @@ public:
 	~Simulation();
 
 	void run(void);
+
 private:
 	//Rendering
-	int screenWidth, screenHeight;
-
-	void render(void);
+	int screenHeight, screenWidth;
 
 	const struct squareRenderInfo
 	{
 		float vertices[12] = {
-			-0.5f,-0.5f,0.0f, //Bottom Left
-			0.5f,-0.5f,0.0f,  //Bottom Right
-			0.5f, 0.5f,0.0f,  //Top Right
-			-0.5f, 0.5f,0.0f  //Top Left
+			-1.0f,-1.0f,0.0f, //Bottom Left
+			1.0f,-1.0f,0.0f,  //Bottom Right
+			1.0f, 1.0f,0.0f,  //Top Right
+			-1.0f, 1.0f,0.0f  //Top Left
 		};
 		unsigned int indices[6] = {
 			0,1,2,
@@ -47,21 +45,20 @@ private:
 
 	GLFWwindow* window;
 
+	std::vector<glm::mat4> modelMatrices;
+
+	void render(void);
 	//Shader stuff
 	unsigned int shaderID;
 
 	void getShaderProgram(std::string vertexPath, std::string fragmentPath);
 	void useShader(void);
 
-
 	//Simulation stuff
 	void Step(void);
 
-	struct Cells {
-		Empty* empty;
-		Predator* predator;
-		Prey* prey;
-	};
+	std::vector<Cell*> gameBoard;
 
-	Cells gameBoard[2][1];
+	//Miscellanious
+	clock_t renderTimeStart;
 };
