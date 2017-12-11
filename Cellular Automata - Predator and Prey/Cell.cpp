@@ -1,11 +1,8 @@
 #include "cell.h"
-#include <cstdlib>
-#include <time.h>
 
-Cell::Cell()
+Cell::Cell(Simulation* simul)
 {
-	srand((unsigned)time(0));
-	switch (rand() % 3)
+	switch (simul->random.getRandomInt(0,2))
 	{
 	case 0:
 		celltype = Empty;

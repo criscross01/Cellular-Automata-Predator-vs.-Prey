@@ -119,11 +119,13 @@
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="random.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cell.h" />
+    <ClInclude Include="random.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

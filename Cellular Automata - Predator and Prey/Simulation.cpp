@@ -137,13 +137,14 @@ void Simulation::useShader()
 //Simulation Stuff
 void Simulation::run()
 {
+
 	for (int i = 0; i < (screenWidth * screenHeight); i++)
 	{
-		gameBoard.push_back(new Cell);
+		gameBoard.push_back(new Cell(this));
 	}
 
 	glm::mat4 scaleModel;
-	scaleModel = glm::scale(scaleModel, glm::vec3((float)2 / screenWidth,(float) 2 / screenHeight, 0.0f));
+	scaleModel = glm::scale(scaleModel, glm::vec3((float)2 / screenWidth,(float)2 / screenHeight, 0.0f));
 	for (int y = 0; y < screenHeight; y++)
 	{
 		for (int x = 0; x < screenWidth; x++)
@@ -168,8 +169,6 @@ void Simulation::Step()
 	{
 		for (int x = 0; x < screenWidth; x++)
 		{
-			srand((unsigned)time(0));
-
 			Cell* thisCell = gameBoard[y * screenWidth + x];
 			
 			int xMov;
@@ -177,33 +176,33 @@ void Simulation::Step()
 
 			if (x != 0 && x != (screenWidth-1))
 			{
-				xMov = rand() % 3 - 1;
+				xMov = random.getRandomInt(-1, 1);
 			}
 
 			else if (x == 0)
 			{
-				xMov = rand() % 2;
+				xMov = random.getRandomInt(0, 1);
 			}
 			
 			else if (x == (screenWidth-1))
 			{
-				xMov = rand() % 2 - 1;
+				xMov = random.getRandomInt(-1, 0);
 			}
 
 
 			if (y != 0 && y != (screenHeight-1))
 			{
-				yMov = rand() % 3 - 1;
+				yMov = random.getRandomInt(-1, 1);
 			}
 
 			else if (y == 0)
 			{
-				yMov = rand() % 2;
+				yMov = random.getRandomInt(0, 1);
 			}
 
 			else if (y == (screenHeight-1))
 			{
-				yMov = rand() % 2 - 1;
+				yMov = random.getRandomInt(-1, 1);
 			}
 
 			Cell* otherCell = gameBoard[(y + yMov)*screenWidth + (x + xMov)];

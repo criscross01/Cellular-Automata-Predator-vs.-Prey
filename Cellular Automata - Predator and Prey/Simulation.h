@@ -7,13 +7,14 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
 #include "cell.h"
+#include "random.h"
 
 class Simulation
 {
@@ -23,6 +24,7 @@ public:
 
 	void run(void);
 
+	Random random;
 private:
 	//Rendering
 	int screenHeight, screenWidth;
