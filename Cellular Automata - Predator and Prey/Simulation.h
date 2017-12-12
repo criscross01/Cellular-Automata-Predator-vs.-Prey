@@ -23,8 +23,6 @@ public:
 	~Simulation();
 
 	void run(void);
-
-	Random random;
 private:
 	//Rendering
 	int screenHeight, screenWidth;
@@ -63,4 +61,5 @@ private:
 
 	//Miscellanious
 	clock_t renderTimeStart;
+	Random random;
 };

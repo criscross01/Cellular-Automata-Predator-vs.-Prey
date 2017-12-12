@@ -1,13 +1,10 @@
 #pragma once
 #include <glm\glm.hpp>
-#include <string>
-#include "random.h"
-#include "Simulation.h"
 
 class Cell
 {
 public:
-	Cell(Simulation*);
+	Cell();
 	~Cell();
 
 	enum cellType {
@@ -24,7 +21,5 @@ public:
 
 	int health;
 
-	int threshold = 10;
-private:
-	Random random;
+	const int threshold = 10;
 };

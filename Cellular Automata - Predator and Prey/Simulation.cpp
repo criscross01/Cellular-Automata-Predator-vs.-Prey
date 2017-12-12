@@ -75,6 +75,9 @@ void Simulation::render()
 {
 	processInput(window);
 	
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	useShader();
 	glBindVertexArray(VAO);
 	
@@ -140,7 +143,20 @@ void Simulation::run()
 
 	for (int i = 0; i < (screenWidth * screenHeight); i++)
 	{
-		gameBoard.push_back(new Cell(this));
+		gameBoard.push_back(new Cell);
+		switch (random.getRandomInt(0, 2))
+		{
+		case 0:
+			gameBoard[i]->setEmpty();
+			break;
+		case 1:
+			gameBoard[i]->setPredator();
+			gameBoard[i]->health = gameBoard[i]->threshold;
+			break;
+		case 2:
+			gameBoard[i]->setPrey();
+			break;
+		}
 	}
 
 	glm::mat4 scaleModel;
@@ -165,42 +181,24 @@ void Simulation::run()
 
 void Simulation::Step()
 {
+	int preyHealthSum{ 0 };
+	int preyNum{ 0 };
 	for (int y = 0; y < screenHeight; y++)
 	{
 		for (int x = 0; x < screenWidth; x++)
 		{
 			Cell* thisCell = gameBoard[y * screenWidth + x];
 			
-			int xMov;
-			int yMov;
+			int xMov{ 0 };
+			int yMov{ 0 };
 
 			if (x != 0 && x != (screenWidth-1))
 			{
 				xMov = random.getRandomInt(-1, 1);
 			}
 
-			else if (x == 0)
-			{
-				xMov = random.getRandomInt(0, 1);
-			}
-			
-			else if (x == (screenWidth-1))
-			{
-				xMov = random.getRandomInt(-1, 0);
-			}
-
 
 			if (y != 0 && y != (screenHeight-1))
-			{
-				yMov = random.getRandomInt(-1, 1);
-			}
-
-			else if (y == 0)
-			{
-				yMov = random.getRandomInt(0, 1);
-			}
-
-			else if (y == (screenHeight-1))
 			{
 				yMov = random.getRandomInt(-1, 1);
 			}
@@ -211,11 +209,20 @@ void Simulation::Step()
 
 			if( thisCell->celltype == 1) //If cell is predator
 			{
-				if (otherCell->celltype == 0) //If other cell is empty
+				thisCell->health -= 1;  //Decrements predator health at start of step
+
+				if (thisCell->health <= 0) //Called when predator is "dead"
+				{
+					thisCell->setEmpty();
+					thisCell->health = 0;
+				}
+
+				else if (otherCell->celltype == 0) //If other cell is empty
 				{
 					otherCell->setPredator();
 					otherCell->health = thisCell->health;
-					thisCell->health = 1;
+					thisCell->setEmpty();
+					thisCell->health = 0;
 				}
 
 				else if (otherCell->celltype == 2) //If other cell is prey
@@ -224,35 +231,36 @@ void Simulation::Step()
 					otherCell->health += thisCell->health;
 					thisCell->health = thisCell->threshold;
 				}
-
-
-				thisCell->health -= 1;
-				if (thisCell->health <= 0) //Called when predator is "dead"
-				{
-					thisCell->setEmpty();
-					thisCell->health = 0;
-				}
 			}
 
 			else if (thisCell->celltype == 2) //If cell is prey
 			{
-				if (otherCell->celltype == 0) //If other cell is predator
+				thisCell->health = thisCell->health + 2;//Increments prey health at start of turn
+
+				if (otherCell->celltype == 0) //If other cell is empty
 				{
+					if (thisCell->health >= thisCell->threshold) 
+					{
+						otherCell->setPrey();
+						otherCell->health = 0;
+						thisCell->health = 0;
+					}
 
+					else
+					{
+						otherCell->setPrey();
+						otherCell->health = thisCell->health;
+						thisCell->setEmpty();
+						thisCell->health = 0;
+					}
 				}
-
-				else if (otherCell->celltype == 1)//If other cell is predator
-				{
-
-				}
-
-				else if (otherCell->celltype == 2) //If other cell is prey
-				{
-
-				}
+				preyHealthSum += thisCell->health;
+				preyNum += 1;
 			}
 		}
 	}
+	cout << "Number of Prey: " << preyNum << endl;
+	cout << "Average Health: " << preyHealthSum / preyNum << endl;
 }
 
 

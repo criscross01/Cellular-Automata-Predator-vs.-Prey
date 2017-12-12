@@ -1,37 +1,23 @@
 #include "cell.h"
 
-Cell::Cell(Simulation* simul)
+Cell::Cell()
 {
-	switch (simul->random.getRandomInt(0,2))
-	{
-	case 0:
-		celltype = Empty;
-		color = glm::vec3(0.0f, 0.0f, 0.0f);
-		break;
-
-	case 1:
-		celltype = Predator;
-		color = glm::vec3(1.0f, 0.0f, 0.0f);
-		break;
-
-	case 2:
-		celltype = Prey;
-		color = glm::vec3(0.0f, 1.0f, 0.0f);
-		break;
-	}
 }
 
 void Cell::setEmpty()
 {
 	celltype = Empty;
+	color = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 void Cell::setPredator()
 {
 	celltype = Predator;
+	color = glm::vec3(1.0f, 0.0f, 0.0f);
 }
 void Cell::setPrey()
 {
 	celltype = Prey;
+	color = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 Cell::~Cell()
