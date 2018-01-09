@@ -15,6 +15,7 @@ void processInput(GLFWwindow* window)
 	}
 }
 
+//Initializes openGL
 Simulation::Simulation(int width, int height, const char* title)
 {
 	screenWidth = width;
@@ -47,8 +48,11 @@ Simulation::Simulation(int width, int height, const char* title)
 
 	glfwSetFramebufferSizeCallback(window, framebufferResize);
 
+	//Gets compiled shader program from text files
 	getShaderProgram("vertexShader.txt", "fragmentShader.txt");
 		
+	
+	//Makes a square renderer
 	unsigned int VBO;
 
 	glGenVertexArrays(1, &VAO);
@@ -58,10 +62,11 @@ Simulation::Simulation(int width, int height, const char* title)
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(square.vertices), square.vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square.vertices), square.vertices, GL_DYNAMIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square.indices), square.indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(square.indices), square.indices, GL_DYNAMIC_DRAW);
+
 
 	glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -71,12 +76,10 @@ Simulation::Simulation(int width, int height, const char* title)
 	glBindVertexArray(0);
 }
 
+//Renders game board
 void Simulation::render()
 {
 	processInput(window);
-	
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 
 	useShader();
 	glBindVertexArray(VAO);
@@ -140,7 +143,7 @@ void Simulation::useShader()
 //Simulation Stuff
 void Simulation::run()
 {
-
+	//Generates a random new gameboard
 	for (int i = 0; i < (screenWidth * screenHeight); i++)
 	{
 		gameBoard.push_back(new Cell);
@@ -151,7 +154,7 @@ void Simulation::run()
 			break;
 		case 1:
 			gameBoard[i]->setPredator();
-			gameBoard[i]->health = gameBoard[i]->threshold;
+			gameBoard[i]->health = threshold;
 			break;
 		case 2:
 			gameBoard[i]->setPrey();
@@ -171,6 +174,7 @@ void Simulation::run()
 		}
 	}
 
+	//Main simulation loop
 	while (!glfwWindowShouldClose(window))
 	{
 		this->Step();
@@ -181,8 +185,6 @@ void Simulation::run()
 
 void Simulation::Step()
 {
-	int preyHealthSum{ 0 };
-	int preyNum{ 0 };
 	for (int y = 0; y < screenHeight; y++)
 	{
 		for (int x = 0; x < screenWidth; x++)
@@ -229,17 +231,17 @@ void Simulation::Step()
 				{
 					otherCell->setPredator();
 					otherCell->health += thisCell->health;
-					thisCell->health = thisCell->threshold;
+					thisCell->health = threshold;
 				}
 			}
 
 			else if (thisCell->celltype == 2) //If cell is prey
 			{
-				thisCell->health = thisCell->health + 2;//Increments prey health at start of turn
+				thisCell->health += 1;//Increments prey health at start of 
 
 				if (otherCell->celltype == 0) //If other cell is empty
 				{
-					if (thisCell->health >= thisCell->threshold) 
+					if (thisCell->health >= threshold) 
 					{
 						otherCell->setPrey();
 						otherCell->health = 0;
@@ -254,13 +256,9 @@ void Simulation::Step()
 						thisCell->health = 0;
 					}
 				}
-				preyHealthSum += thisCell->health;
-				preyNum += 1;
 			}
 		}
 	}
-	cout << "Number of Prey: " << preyNum << endl;
-	cout << "Average Health: " << preyHealthSum / preyNum << endl;
 }
 
 

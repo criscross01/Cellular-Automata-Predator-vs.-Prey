@@ -59,6 +59,7 @@ private:
 
 	std::vector<Cell*> gameBoard;
 
+	const unsigned int threshold{ 5 };
 	//Miscellanious
 	clock_t renderTimeStart;
 	Random random;

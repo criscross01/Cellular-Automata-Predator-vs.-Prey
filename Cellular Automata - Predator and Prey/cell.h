@@ -19,7 +19,5 @@ public:
 	
 	glm::vec3 color;
 
-	int health;
-
-	const int threshold = 10;
+	unsigned int health{ 0 };
 };
